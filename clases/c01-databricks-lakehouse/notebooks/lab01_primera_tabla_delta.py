@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "6"
+# ///
 # MAGIC %md
 # MAGIC # Lab 1 — Primer activo gobernado en el Lakehouse
 # MAGIC
@@ -69,6 +73,13 @@ SELECT CodigoVariable, count(*) AS filas, min(Fecha) AS desde, max(Fecha) AS has
 FROM {tabla}
 GROUP BY CodigoVariable
 """).display()
+
+# COMMAND ----------
+
+spark.sql(f"""
+          SELECT DISTINCT CodigoSICAgente, MercadoComercializacion, TipoMercado, ClasificacionIndustrial
+          FROM {tabla}
+          """).display()
 
 # COMMAND ----------
 
