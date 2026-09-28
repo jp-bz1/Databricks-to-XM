@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "6"
+# ///
 # MAGIC %md
 # MAGIC # Lab 2 — Explorar para diseñar
 # MAGIC
@@ -43,7 +47,7 @@ filas_por_serie_dia.display()
 # MAGIC **Pregunta de diseño 1.** Plata será una fila por serie-día con `demanda_real_kwh` y `perdidas_kwh`.
 # MAGIC ¿Qué debe pasar si un día llega solo una de las dos filas? (nulo, rechazar, cuarentena)
 # MAGIC
-# MAGIC _Tu respuesta:_
+# MAGIC _Tu respuesta:_ Si falta una de las dos variables para una serie-día, el registro debe enviarse a "revision". No se debe imputar cero, porque la ausencia del dato no implica que la demanda o las pérdidas sean cero.
 
 # COMMAND ----------
 
@@ -73,7 +77,7 @@ GROUP BY FechaPublicacion ORDER BY FechaPublicacion
 # MAGIC **Pregunta de diseño 2.** Hoy cada `Fecha` tiene una sola `FechaPublicacion`, pero el 25 de julio se publicaron 200 días de golpe.
 # MAGIC Cuando el próximo archivo traiga días que ya existen, ¿bronce sobrescribe o acumula? ¿Quién decide cuál versión es la vigente?
 # MAGIC
-# MAGIC _Tu respuesta:_
+# MAGIC _Tu respuesta:_ Bronce debe acumular todas las publicaciones sin sobrescribir, para conservar la trazabilidad. Plata debe decidir la versión vigente seleccionando, para cada serie-día, el registro con la FechaPublicacion más reciente.
 
 # COMMAND ----------
 
@@ -103,7 +107,7 @@ print("Series incompletas:", n_incompletas)
 # MAGIC **Pregunta de diseño 3.** ¿Qué hace plata con una serie que aparece o desaparece a mitad de periodo?
 # MAGIC (rellenar con cero, marcar `activa = false`, excluir del modelo)
 # MAGIC
-# MAGIC _Tu respuesta:_
+# MAGIC _Tu respuesta:_ Plata no debe rellenar los días faltantes con cero, porque ausencia de información no significa consumo cero. Debe conservar los datos disponibles, marcar la serie como inactiva cuando deje de reportar y excluirla del modelo si no tiene suficiente historial.
 
 # COMMAND ----------
 
@@ -130,7 +134,7 @@ por_tipo.display()
 # MAGIC **Pregunta de diseño 4.** 29 series regulan el 69 % de la energía; 326 series no reguladas son pequeñas y ruidosas.
 # MAGIC ¿Un modelo global para todo, uno por tipo de mercado, o uno por serie? ¿Qué métrica de error es justa entre escalas tan distintas?
 # MAGIC
-# MAGIC _Tu respuesta:_
+# MAGIC _Tu respuesta:_ Se utilizará un modelo diferente por tipo de mercado, porque Regulado y No Regulado presentan diferencias importantes en escala, cantidad de series y diversidad industrial. Para comparar el desempeño de ambos modelos se utilizará una métrica normalizada como MASE, evitando que las series de mayor demanda dominen la evaluación.
 
 # COMMAND ----------
 
@@ -154,7 +158,7 @@ print("Serie-días con demanda 0:", n_ceros)
 # MAGIC %md
 # MAGIC **Pregunta de diseño 5.** ¿Un cero es consumo real, ausencia de medida o error? ¿Qué regla de calidad va en plata y qué se hace con la fila (warn, cuarentena, drop)?
 # MAGIC
-# MAGIC _Tu respuesta:_
+# MAGIC _Tu respuesta:_ Plata debe conservar los ceros, pero marcarlos con una advertencia (warn) para revisión. No deben eliminarse ni sustituirse automáticamente, porque el análisis no permite determinar si representan consumo real, ausencia de medición o un error.
 
 # COMMAND ----------
 
@@ -183,7 +187,7 @@ perdidas.display()
 # MAGIC %md
 # MAGIC **Pregunta de diseño 6.** Pérdidas ≈ 1,5 % de la demanda y nunca mayores. ¿Va como regla de calidad (`perdidas <= demanda`)? ¿Se pronostican las pérdidas o solo la demanda?
 # MAGIC
-# MAGIC _Tu respuesta:_
+# MAGIC _Tu respuesta:_ Sí, perdidas_kwh <= demanda_real_kwh debe ser una regla de calidad. Se pronosticará únicamente la demanda; las pérdidas se conservarán como variable de control y análisis.
 
 # COMMAND ----------
 
