@@ -134,12 +134,17 @@ por_tipo.display()
 # MAGIC **Pregunta de diseño 4.** 29 series regulan el 69 % de la energía; 326 series no reguladas son pequeñas y ruidosas.
 # MAGIC ¿Un modelo global para todo, uno por tipo de mercado, o uno por serie? ¿Qué métrica de error es justa entre escalas tan distintas?
 # MAGIC
-# MAGIC _Tu respuesta:_ Se utilizará un modelo diferente por tipo de mercado, porque Regulado y No Regulado presentan diferencias importantes en escala, cantidad de series y diversidad industrial. Para comparar el desempeño de ambos modelos se utilizará una métrica normalizada como MASE, evitando que las series de mayor demanda dominen la evaluación.
+# MAGIC _Tu respuesta:_ Se utilizará un modelo global que incluya TipoMercado como variable explicativa, permitiendo que el modelo aprenda las diferencias entre Regulado y No Regulado. El desempeño se evaluará separadamente para ambos mercados mediante una métrica normalizada como MASE.
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## Hecho 5 — Ceros
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC
 
 # COMMAND ----------
 
