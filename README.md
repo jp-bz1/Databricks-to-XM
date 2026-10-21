@@ -119,17 +119,11 @@ Hitos (según el programa del curso): H1 pregunta analítica · H2 arquitectura 
 - **Sector:** reproducibilidad como requisito ante auditoría regulatoria: poder reconstruir hoy el pronóstico que se publicó hace seis meses (código, configuración, versión Delta, modelo).
 - **Entregable:** paquete `xm_demanda` con tests unitarios y de integración pasando en CI; evidencia de un PR detenido por CI. Hito 4 cerrado.
 
-### Clase 9 — Experimentación con MLflow
-- **Teoría:** MLflow 3 en Databricks: experimentos, runs, artefactos, `log_input`, evaluación y comparación; baselines honestos; validación temporal; errores típicos (leakage, métricas globales que esconden segmentos).
-- **Práctica:** baseline estacional-naive; modelo global LightGBM con lags y categóricas; comparación de runs; métricas por segmento; probar la temperatura y descartarla con evidencia.
-- **Sector:** cómo pronostican demanda XM (pronóstico publicado), los operadores europeos (ENTSO-E day-ahead) y AEMO; por qué el baseline estacional es difícil de vencer en demanda eléctrica.
-- **Entregable:** experimento `demanda_7d` con runs comparables y modelo candidato. Hito 5 abierto.
-
-### Clase 10 — Registro, versiones y entrenamiento reproducible
-- **Teoría:** Model Registry en Unity Catalog; versiones y alias (`champion`/`challenger`); firma y ejemplo de entrada; linaje modelo↔datos↔código; el patrón "deploy code, not models" y cuándo sí promover artefactos.
-- **Práctica:** `train.py` parametrizado por configuración; registro del modelo en `dev.models.demanda_7d`; promoción por alias; detectar un modelo entrenado desde `dev` con datos de `prod`.
-- **Sector:** trazabilidad de qué modelo produjo qué pronóstico y con qué datos, condición para publicar cifras que usan terceros.
-- **Entregable:** modelo registrado y versionado con firma.
+### Clases 9 y 10 — MLOps en acción: experimentar, medir y registrar (sesión doble, 2 h 30 min)
+- **Teoría:** qué es MLOps y su ciclo (datos → experimentar → evaluar → registrar → desplegar → monitorear → reentrenar); qué medir y para qué (calidad, honestidad, datos, operación, negocio); qué ofrece Databricks en cada paso (MLflow Tracking, evaluación, Model Registry en Unity Catalog, Serving, Monitoring, AutoML); anatomía de un run; baselines honestos; validación temporal y walk-forward; fuga de información vista en el tracking; versiones, alias, firma y linaje; "deploy code, not models".
+- **Práctica:** experimento `demanda_7d` con modelos de varios tipos y el mismo tracking: naive estacional, regla de festivo, LightGBM global sin escala, walk-forward con runs anidados, un run con fuga marcado, un clasificador ("¿cae más de 10 %?") y un clustering de perfiles semanales; métricas por segmento; registro de dos candidatos en Unity Catalog con `@champion` / `@challenger`; inferencia cargando `@champion`.
+- **Sector:** cómo pronostican demanda XM, ENTSO-E y AEMO; por qué el baseline estacional es difícil de vencer en demanda eléctrica; trazabilidad de qué modelo produjo qué pronóstico con qué datos.
+- **Entregable:** experimento con 7 runs comparables y modelo registrado con alias y firma. Hito 5 abierto.
 
 ### Clase 11 — Inferencia batch, Serving y Apps
 - **Teoría:** batch vs. tiempo real vs. app: criterios de decisión; Model Serving (CPU/GPU, escalado, monitoreo de endpoint); AI Gateway; Databricks Apps; Genie y AI/BI Dashboards; lo que Free Edition permite (Serving CPU, 3 apps con caducidad de 24 h).

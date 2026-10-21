@@ -1,16 +1,3 @@
-# Lab 10 — Registro, versiones y entrenamiento reproducible
+# Lab 10
 
-## Objetivo
-
-## Antes de empezar
-
-## Pasos
-
-## Criterios de aceptación
-
-- [ ]
-- [ ]
-
-## Extensión opcional
-
-## Así sería en Azure Databricks
+Integrado en el [lab 9](../c09-mlflow/lab.md) (secciones 10 y verificación).

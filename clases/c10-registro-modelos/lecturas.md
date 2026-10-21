@@ -1,5 +1,3 @@
 # Lecturas — Clase 10
 
-## Databricks
-
-## Sector eléctrico
+Ver [lecturas de la clase 9](../c09-mlflow/lecturas.md), sección "Registro".
